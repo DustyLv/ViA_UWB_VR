@@ -1,0 +1,61 @@
+ManifestFileVersion: 0
+CRC: 2744302293
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: eac305307343524956371fa5ca4ad1a3
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: dd877a6e8f21808f24b1aba124b4b0da
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 81
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/Avatars/UWB_PeugoetBicycle.prefab
+- Assets/Resources/Avatars/UWB_K9.prefab
+- Assets/Resources/Avatars/UWB_StreetLantern.prefab
+- Assets/Resources/Avatars/UWB_Computer.prefab
+- Assets/Resources/Avatars/UWB_Avatar.prefab
+- Assets/Resources/Avatars/UWB_Monkey.prefab
+- Assets/Resources/Avatars/UWB_RockBig.prefab
+- Assets/Resources/Avatars/UWB_Human.prefab
+- Assets/Resources/Avatars/UWB_House.prefab
+- Assets/Resources/Avatars/UWB_TrashBin.prefab
+- Assets/Resources/Avatars/UWB_Camera.prefab
+- Assets/Resources/Avatars/UWB_ShopSign.prefab
+Dependencies: []

@@ -1,0 +1,11 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!49 &4900000
+TextAsset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Recording_12-03-2019_11-06-40
+  m_Script: 
+{"id":"71","address":"0x01AA21458A3B", "datastreams":[{"id":"posX","current_value":" 7.30","at":"2019-03-12 09:06:41.666"},{"id":"posY","current_value":" 4.37","at":"2019-03-12 09:06:41.666"},{"id":"posZ","current_value":" 5.38","at":"2019-03-12 09:06:41.666"},{"id":"clr","current_value":" 0.25","at":"2019-03-12 09:06:41.666"},{"id":"numberOfAnchors","current_value":"4","at":"2019-03-12 09:06:41.666"},{"id":"quaternion","current_value":" 0.84; 0.53; 0.05;-0.13","at":"2019-03-12 09:06:41.666"},{"id":"temperature","current_value":"26.5","at":"2019-03-12 09:06:41.666"},{"id":"pressure","current_value":"100116.50","at":"2019-03-12 09:06:41.666"}],"extended_tag_position":{"master":"801F124C7571", "corrected": false, "slaves": [{"address":"801F124B9E1B","time":0.338650833466886,"fp":-87.31,"rssi":-83.19},{"address":"801F124C7571","time":0.338650813880334,"fp":-85.28,"rssi":-80.77},{"address":"801F124CFED4","time":0.338650822692713,"fp":-87.10,"rssi":-79.91},{"address":"801F124C13EA","time":0.338650830123112,"fp":-1

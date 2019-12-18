@@ -1,0 +1,68 @@
+
+UWB tag - the physical device that gets tracked in real life.
+UWB object - an object in the scene that uses the data from the UWB tag.
+
+Used scripts:
+
+	On _Scripts gameobject:
+
+		UDPReceiver:
+			Receives raw JSON data from UWB server through UDP, port 5300. Once data packet is received, it sends it to JsonToObject method in JSONWorker script.
+			Controls data recording enable state. If recording set to True, when data is received, it sends it to ReceiveAndProcess method in JSONRecorder script.
+		JSONWorker
+			Converts received raw JSON data to data useable in Unity. For each new data, creates a new entry in list of SensorRawData which contains values for each UWB tag (position, rotation, etc). 
+			The current/last data entry is sent to the specific UWB object in the scene (or created a new UWB object if it is not present in the scene).
+		UWBObjectManager
+			Used to manage general UWB tag objects. Stores all UWB objects in scene in a list,
+			uses it to return a specific object or just to check if it is in the scene. Also performs new UWB object creation, if new (unknown) data is received.
+			Stores currently active/selected UWB object in the scene.
+		JSONRecorder
+			Saves incoming JSON data to file. Adds DateTime to file name for multiple recording sessions. Saves recorded files in ../Assets/Resources/ folder.
+		JSONPlayback
+			Replays saved JSON data recordings. Splits data by rows and stores each entry in a string list. On playback, goes through each entry in the list and sends it to JSONWorker to convert the raw JSON into useable data, using JsonToObjectReturn.
+			Using available Timestamp from JSON entry, calculate the time between each data change and wait that long before calculating and applying the next data change. 
+			To apply the data changes to UWB object itself, we use JsonToObject method in JSONWorker.
+		Pointer
+			Creates and controls a visual laser pointer. Uses LineRenderer to draw the laser. Uses raycasting to check if it hit something and places the end of the laser (and sphere object) at the collision point.
+			Works with UI elements. Uses Unity EventSystems and VRInputModule (that extends Unity default InputModule) so that it can collide with UI.
+		
+		
+	On PR_VREventSystem gameobject:
+
+		VRInputModule
+			Extends Unity default InputModule to process input on UI elements, using VR input. 
+		
+	On UserControlScripts gameobject:
+
+		AvatarSelectorController
+			Controls the data acquiring and UI generation for UWB object avatar changing. Provides acquiring prefabs locally from the Resources folder as prefabs or
+			from StreamingAssets folder as an AssetBundle, and remotely from a URL as an AssetBundle. After assets have been acquired, it generates thumbnails. 
+			Each UI entry for the assets are then placed in a UI list where the user changes the avatar by clicking on the UI entry.
+		InputDeviceController
+			Implements Unity XR Input for unified input control managing across multiple VR systems. Contains UnityEvents for an input event (such as Primary button press), 
+			which get trigered when the set input type is pressed. User can assign methods and actions from different scripts to each event, and, when the event gets trigered, 
+			the assigned method gets called aswell.
+		ActiveUWBObjectSelecter
+			Provides the ability to select different UWB objects in the scene as the active UWB object for the UWBObjectManager script. Uses Raycast to get the object. 
+			IMPORTANT! The collider object has to be a separate object under the prefab root object, and must have the tag "UWBTagAvatar". 
+			This is to make sure everything works and the main root object with UWBObject script is found.
+			When a new active UWB object is selected, its data is shown on the active object UI (position, rotation), aswell as changes to the settings are done to that UWB object.
+		ActiveUWBObjectDataOutputUI
+			Controls the active UWB tag's UI. Shows current position and rotation. Allows to change the settings (position overrides, invert and offset) and apply those changes to the UWB object.
+			Allows to change the active UWB objects avatar.
+		GlobalVariables
+			Contains variables that are used in multiple scripts.
+
+
+	On ParametricRoomGenerator gameobject:
+		
+		ParametricRoom
+			Allows to generate a simple room (a cube) with specific dimensions in meters.
+			Instantiates a cube of size 1m*1m*1m in the center of the scene. Then sets/multiplies its scale to specified dimensions.
+
+	On each UWB object:	
+		
+		UWBObject
+			Controls each UWB object's position and rotation. Is assigned to a specific UWB tag and it's name is set to the name of the tag, to filter it and send correct data. Receives data from JSONWorker
+			and filters it by specific value names ('posX' for position on the X axis or 'quaterion' for rotation value in quaterions). Then sets the values to the Transform component.
+			Contains position override, invert and offset values set from the ActiveUWBObjectDataOutputUI script, which are then added to the original position and rotation values.
