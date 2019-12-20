@@ -22,6 +22,9 @@ public class UDPReceiver : MonoBehaviour
 
     JSONWorker jsonWorker;
 
+    /// <summary>
+    /// Gets reference for jsonWorker variable from the gameobject. Creates and starts a new thread for receiving data from the server.
+    /// </summary>
     void Start()
     {
         jsonWorker = GetComponent<JSONWorker>();
@@ -29,6 +32,9 @@ public class UDPReceiver : MonoBehaviour
         thread.Start();
     }
 
+    /// <summary>
+    /// Continually check if new JSON data is received and sends it to JSONWorker to be processed. Controls raw JSON data recording state.
+    /// </summary>
     void FixedUpdate()
     {
         if (processData)
@@ -51,9 +57,16 @@ public class UDPReceiver : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Creates a new UDP client object. Receives raw JSON data from server and stores it in a variable.
+    /// </summary>
     private void ThreadMethod()
     {
         udp = new UdpClient(port);
+        if(udp != null)
+        {
+            Debug.Log("UDP connection established");
+        }
         while (true)
         {
             IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
@@ -69,7 +82,7 @@ public class UDPReceiver : MonoBehaviour
                 //Debug.Log(returnData);
                 if (returnData != "")
                 {
-                    print(returnData);
+                    //print(returnData);
                     //Done, notify the Update function
                     processData = true;
                 }

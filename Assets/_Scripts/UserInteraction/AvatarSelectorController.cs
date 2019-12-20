@@ -37,7 +37,10 @@ public class AvatarSelectorController : MonoBehaviour {
 
     private Color m_ThumbnailBackColor = new Color(1f, 1f, 1f, 0f);
 
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// Loads avatars based on the source type set in the Editor.
+    /// </summary>
     void Start () {
         switch (m_AvatarSource)
         {
@@ -55,10 +58,6 @@ public class AvatarSelectorController : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update () {
-
-    }
 
     void LoadLocalAvatarsFromAssetBundleN() // old 
     {
@@ -77,6 +76,10 @@ public class AvatarSelectorController : MonoBehaviour {
         CreateAvatarItems(avatarObjects);
     }
 
+    /// <summary>
+    /// Loads avatars asynchronally from a local AssetBundle into a GameObject array.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator LoadLocalAvatarsFromAssetBundle()
     {
         string filePath = Path.Combine(Application.streamingAssetsPath, "AssetBundles");
@@ -95,6 +98,9 @@ public class AvatarSelectorController : MonoBehaviour {
         StartCoroutine(CreateAvatarItems(avatarObjects));
     }
 
+    /// <summary>
+    /// Loads avatars from the local Resources folder into a GameObject array.
+    /// </summary>
     void LoadLocalAvatarsFromResources()
     {
         GameObject[] avatarObjects = Resources.LoadAll("Avatars", typeof(GameObject)).Cast<GameObject>().ToArray();
@@ -102,6 +108,10 @@ public class AvatarSelectorController : MonoBehaviour {
         StartCoroutine(CreateAvatarItems(avatarObjects));
     }
 
+    /// <summary>
+    /// Loads avatars asynchronally from a remote AssetBundle into a GameObject array.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator LoadRemoteAvatarsFromAssetBundle() // create async download and load
     {
         UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(m_RemoteAvatarAssetBundleLink);
@@ -125,6 +135,11 @@ public class AvatarSelectorController : MonoBehaviour {
         
     }
 
+    /// <summary>
+    /// Creates new AvatarItem objects for each received avatar gameobject. Sets objects label, avatar gameobject and thumbnail data. 
+    /// </summary>
+    /// <param name="avatarObjects"></param>
+    /// <returns></returns>
     IEnumerator CreateAvatarItems(GameObject[] avatarObjects)
     {
         if(avatarObjects == null)
@@ -144,17 +159,10 @@ public class AvatarSelectorController : MonoBehaviour {
         }
     }
 
-    //void GenerateAvatarItems ()
-    //{
-    //    for (int i = 0; i < m_AvatarList.Count; i++)
-    //    {
-    //        GameObject go = Instantiate (avatarEntryPrefab);
-    //        go.transform.position = Vector3.zero;
-    //        go.transform.rotation = Quaternion.identity;
-    //        go.transform.SetParent(avatarListRoot, false);
-    //        go.GetComponent<AvatarSelectItem> ().SetupAvatarItem (m_AvatarList[i]);
-    //    }
-    //}
+    /// <summary>
+    /// Instantiates a new avatar UI prefab, sets its position, rotation and parent. Sets up its AvatarSelectItem values from AvatarItem provided from CreateAvatarItems().
+    /// </summary>
+    /// <param name="_a"></param>
     void GenerateAvatarItem(AvatarItem _a)
     {
 
@@ -166,6 +174,11 @@ public class AvatarSelectorController : MonoBehaviour {
     
     }
 
+    /// <summary>
+    /// Uses RuntimePreviewGenerator to generate thumbnails for the avatar selecter UI.
+    /// </summary>
+    /// <param name="_gameObject"></param>
+    /// <returns>Returns a Texture2D.</returns>
     Texture2D GenerateAvatarThumbnail(GameObject _gameObject)
     {
         RuntimePreviewGenerator.PreviewRenderCamera = m_ThumbnailCamera;

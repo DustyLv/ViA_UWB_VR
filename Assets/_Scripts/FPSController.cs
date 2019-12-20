@@ -30,9 +30,13 @@ public class FPSController : MonoBehaviour
     }
 
     void Move(){
-        playerMoveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
-        playerMoveDirection = transform.TransformDirection(playerMoveDirection);
-        playerMoveDirection = playerMoveDirection * playerMoveSpeed;
+        if (charCtrl.isGrounded)
+        {
+            playerMoveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
+            playerMoveDirection = transform.TransformDirection(playerMoveDirection);
+            playerMoveDirection *= playerMoveSpeed;
+        }
+        playerMoveDirection.y -= 20f * Time.deltaTime;
         charCtrl.Move(playerMoveDirection * Time.deltaTime);
     }
 

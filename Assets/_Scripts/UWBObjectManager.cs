@@ -5,8 +5,7 @@ using UnityEngine;
 public class UWBObjectManager : MonoBehaviour
 {
     public UWBObject UWBObjectPrefab;
-    public List<UWBObject> UWBObjects;
-    //public GameObject[] UWBAddonObjects;
+    public List<UWBObject> UWBObjects; // list that stores all UWB objects in the scene
 
     public UWBObject activeSelectedUWBObject;
 
@@ -27,11 +26,19 @@ public class UWBObjectManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Finds any and all UWBObject objects in the scene. Adds them to the UWBObjects list.
+    /// </summary>
     void FindAllUWBObjects()
     {
         UWBObjects.AddRange(GameObject.FindObjectsOfType<UWBObject>());
     }
 
+    /// <summary>
+    /// Goes over the UWB
+    /// </summary>
+    /// <param name="address"></param>
+    /// <returns></returns>
     public UWBObject FindObjectByAddress(string address)
     {
         foreach (UWBObject uwbObj in UWBObjects)
@@ -41,6 +48,11 @@ public class UWBObjectManager : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// Checks if there is an object in the scene with an address.
+    /// </summary>
+    /// <param name="address"></param>
+    /// <returns></returns>
     public bool SceneHasObjectWithAddress(string address)
     {
         if (UWBObjects.Count > 0)
@@ -53,6 +65,10 @@ public class UWBObjectManager : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Creates a new UWB objecy in the scene with address from the tag.
+    /// </summary>
+    /// <param name="address"></param>
     public void CreateNewUWBObject(string address)
     {
         UWBObject uwb = Instantiate(UWBObjectPrefab);

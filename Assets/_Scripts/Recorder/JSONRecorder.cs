@@ -28,6 +28,10 @@ public class JSONRecorder : MonoBehaviour
 
     StreamWriter writer = null;
 
+    /// <summary>
+    /// Receives and writes JSON data to a file. Adds DateTime to file name.
+    /// </summary>
+    /// <param name="data"></param>
     public void ReceiveAndProcess(string data)
     {
         #if UNITY_EDITOR
@@ -55,6 +59,9 @@ public class JSONRecorder : MonoBehaviour
         #endif
     }
 
+    /// <summary>
+    /// Ends recording session.
+    /// </summary>
     void EndSession()
     {
 

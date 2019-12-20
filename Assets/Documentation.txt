@@ -1,4 +1,3 @@
-
 UWB tag - the physical device that gets tracked in real life.
 UWB object - an object in the scene that uses the data from the UWB tag.
 

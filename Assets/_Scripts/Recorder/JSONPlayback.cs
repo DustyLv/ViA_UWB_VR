@@ -17,6 +17,9 @@ public class JSONPlayback : MonoBehaviour
 
     JSONWorker jsonWorker;
 
+    /// <summary>
+    /// Converts a file with recording data into a string list.
+    /// </summary>
     void Start()
     {
         jsonWorker = GetComponent<JSONWorker>();
@@ -26,6 +29,9 @@ public class JSONPlayback : MonoBehaviour
         recordingList.RemoveRange(recordingList.Count - 2, 2); // remove last 2 lines, because 2nd to last is the button press (which we don't need since it starts recording again), and last one is empty
     }
 
+    /// <summary>
+    /// Gets keyboard key down (Space key) and toggles playback state. Based on state, starts or stops the playback coroutine.
+    /// </summary>
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -38,6 +44,10 @@ public class JSONPlayback : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Replays recorded JSON data in real-time by iterating over the recordingList. Calculates time between each iteration based on data provided by JSON data entry in the list.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Play()
     {
         foreach (string s in recordingList)
@@ -85,6 +95,11 @@ public class JSONPlayback : MonoBehaviour
         playRecording = false;
     }
 
+    /// <summary>
+    /// Converts a date/time string into a DateTime and returns it.
+    /// </summary>
+    /// <param name="dt"></param>
+    /// <returns></returns>
     DateTime ConvertStringToDateTime(string dt)
     {
         CultureInfo cultureInfo = new CultureInfo("lv-LV");
