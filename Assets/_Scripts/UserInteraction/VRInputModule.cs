@@ -1,101 +1,73 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR;
 using UnityEngine.EventSystems;
 
 
 public class VRInputModule : BaseInputModule
 {
-    public Camera m_Camera;
-    //public SteamVR_Input_Sources m_TargetSource;
-    //public SteamVR_Action_Boolean m_ClickAction;
+    [SerializeField] private Pointer m_Pointer = null;
+    public PointerEventData m_Data { get; private set; } = null;
 
-    private GameObject m_CurrentObject = null;
-    private PointerEventData m_Data = null;
+    public SteamVR_Input_Sources m_TargetSource;
+    public SteamVR_Action_Boolean m_ClickAction;
+
+    //private GameObject m_CurrentObject = null;
+    
 
     protected override void Start()
     {
-        InputDeviceController.i.triggerButtonEvent.AddListener(OnTriggerPress);
-    }
-
-    protected override void Awake()
-    {
-        base.Awake();
-
         m_Data = new PointerEventData(eventSystem);
+        m_Data.position = new Vector2(m_Pointer.m_Camera.pixelWidth / 2, m_Pointer.m_Camera.pixelHeight / 2);
     }
 
     public override void Process()
     {
-        m_Data.Reset();
-        m_Data.position = new Vector2(m_Camera.pixelWidth / 2, m_Camera.pixelHeight / 2);
-
         eventSystem.RaycastAll(m_Data, m_RaycastResultCache);
         m_Data.pointerCurrentRaycast = FindFirstRaycast(m_RaycastResultCache);
-        m_CurrentObject = m_Data.pointerCurrentRaycast.gameObject;
 
-        m_RaycastResultCache.Clear();
+        HandlePointerExitAndEnter(m_Data, m_Data.pointerCurrentRaycast.gameObject);
 
-        HandlePointerExitAndEnter(m_Data, m_CurrentObject);
-    }
+        ExecuteEvents.Execute(m_Data.pointerDrag, m_Data, ExecuteEvents.dragHandler);
 
-    void OnTriggerPress(bool pressed)
-    {
-        if (pressed)
+
+        if (m_ClickAction.GetStateDown(m_TargetSource))
         {
-            ProcessPress(m_Data);
+            Press();
         }
-        else
+
+        if (m_ClickAction.GetStateUp(m_TargetSource))
         {
-            ProcessRelease(m_Data);
+            Release();
         }
     }
 
-    public PointerEventData GetData()
+    public void Press()
     {
-        return m_Data;
+        m_Data.pointerPressRaycast = m_Data.pointerCurrentRaycast;
+
+        m_Data.pointerPress = ExecuteEvents.GetEventHandler<IPointerClickHandler>(m_Data.pointerPressRaycast.gameObject);
+        m_Data.pointerDrag = ExecuteEvents.GetEventHandler<IDragHandler>(m_Data.pointerPressRaycast.gameObject);
+
+        ExecuteEvents.Execute(m_Data.pointerPress, m_Data, ExecuteEvents.pointerDownHandler);
+        ExecuteEvents.Execute(m_Data.pointerDrag, m_Data, ExecuteEvents.beginDragHandler);
     }
 
-    private void ProcessPress(PointerEventData data)
+    public void Release()
     {
-        // set raycast
-        data.pointerPressRaycast = data.pointerCurrentRaycast;
+        GameObject pointerRelease = ExecuteEvents.GetEventHandler<IPointerClickHandler>(m_Data.pointerCurrentRaycast.gameObject);
 
-        // check for object hit, get the down handler, call
-        GameObject newPointerPress = ExecuteEvents.ExecuteHierarchy(m_CurrentObject, data, ExecuteEvents.pointerDownHandler);
+        if (m_Data.pointerPress == pointerRelease)
+            ExecuteEvents.Execute(m_Data.pointerPress, m_Data, ExecuteEvents.pointerClickHandler);
 
-        // if no down handler, try and get click handler
-        if(newPointerPress == null)
-        {
-            newPointerPress = ExecuteEvents.GetEventHandler<IPointerClickHandler>(m_CurrentObject);
-        }
+        ExecuteEvents.Execute(m_Data.pointerPress, m_Data, ExecuteEvents.pointerUpHandler);
 
-        // set data
-        data.pressPosition = data.position;
-        data.pointerPress = newPointerPress;
-        data.rawPointerPress = m_CurrentObject;
-    }
+        ExecuteEvents.Execute(m_Data.pointerDrag, m_Data, ExecuteEvents.endDragHandler);
 
-    private void ProcessRelease(PointerEventData data)
-    {
-        // execute pointer up
-        ExecuteEvents.Execute(data.pointerPress, data, ExecuteEvents.pointerUpHandler);
+        m_Data.pointerPress = null;
+        m_Data.pointerDrag = null;
 
-        // check for click handler
-        GameObject pointerUpHandler = ExecuteEvents.GetEventHandler<IPointerClickHandler>(m_CurrentObject);
-
-        // check if actual
-        if(data.pointerPress == pointerUpHandler)
-        {
-            ExecuteEvents.Execute(data.pointerPress, data, ExecuteEvents.pointerClickHandler);
-        }
-
-        // click selected gameobject
-        eventSystem.SetSelectedGameObject(null);
-
-        // reset data
-        data.pressPosition = Vector2.zero;
-        data.pointerPress = null;
-        data.rawPointerPress = null;
+        m_Data.pointerCurrentRaycast.Clear();
     }
 }

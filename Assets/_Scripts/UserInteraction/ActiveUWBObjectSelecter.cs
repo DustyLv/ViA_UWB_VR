@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.UI;
+using Valve.VR;
 
 public class ActiveUWBObjectSelecter : MonoBehaviour {
     [SerializeField]
     private Transform pointerObject;
 
     public TMPro.TextMeshProUGUI activeTagLabel;
+
+    public SteamVR_Input_Sources m_TargetSource;
+    public SteamVR_Action_Boolean m_SelectAction;
 
     private GameObject lastSelectedUWBAvatar = null;
 
@@ -19,27 +23,24 @@ public class ActiveUWBObjectSelecter : MonoBehaviour {
 
     void Start () {
 
-        InputDeviceController.i.triggerButtonEvent.AddListener(OnSelectUWBAvatar);
     }
 
     // Update is called once per frame
     void FixedUpdate () {
 
-        RaycastHit hit = ExtensionMethods.CreateRaycast(pointerObject, GlobalVariables.MAX_RAYCAST_DISTANCE, layerMask);
 
-        if (hit.collider != null)
-        {
-            lastSelectedUWBAvatar = null;
-            lastSelectedUWBAvatar = hit.transform.gameObject;
-        }
-    }
 
-    void OnSelectUWBAvatar(bool pressed)
-    {
-        if (pressed)
+        if (m_SelectAction.GetStateDown(m_TargetSource))
         {
-            if (lastSelectedUWBAvatar != null)
-                SetActiveUWBObject(lastSelectedUWBAvatar);
+            RaycastHit hit = ExtensionMethods.CreateRaycast(pointerObject, GlobalVariables.MAX_RAYCAST_DISTANCE, layerMask);
+
+            if (hit.collider != null)
+            {
+                lastSelectedUWBAvatar = null;
+                lastSelectedUWBAvatar = hit.transform.gameObject;
+            }
+
+            SetActiveUWBObject(lastSelectedUWBAvatar);
         }
     }
 

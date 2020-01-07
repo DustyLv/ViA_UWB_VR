@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR;
 using UnityEngine.XR;
 
 public class VRTeleport : MonoBehaviour
@@ -9,24 +10,28 @@ public class VRTeleport : MonoBehaviour
     public Transform rightHand;
     public Transform playerObject;
 
+    public SteamVR_Input_Sources m_TargetSource;
+    public SteamVR_Action_Boolean m_TeleportAction;
+
     private bool validTeleportAreaFound = false;
     private RaycastHit m_hit;
 
-    // Start is called before the first frame update
     void Start()
     {
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        validTeleportAreaFound = Physics.Raycast(rightHand.position, rightHand.TransformDirection(Vector3.forward), out m_hit, Mathf.Infinity, layerMask);
-
+        if (m_TeleportAction.GetStateUp(m_TargetSource))
+        {
+            Teleport();
+        }
     }
 
-    public void Teleport(bool pressed)
+    public void Teleport()
     {
-        if (validTeleportAreaFound && pressed)
+        validTeleportAreaFound = Physics.Raycast(rightHand.position, rightHand.TransformDirection(Vector3.forward), out m_hit, Mathf.Infinity, layerMask);
+        if (validTeleportAreaFound)
         {
             Vector3 newPos = m_hit.point;
             playerObject.position = newPos;

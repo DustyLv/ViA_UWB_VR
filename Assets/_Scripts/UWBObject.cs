@@ -10,7 +10,7 @@ public class UWBObject : MonoBehaviour {
     #region Variables
     [Header ("Sensor Data")]
     public string UWBAddress;
-    public SensorDataRaw data;
+    //public SensorDataRaw data; // there is a thing in ReceiveData to uncomment aswell
 
     [Header ("Position Override Settings")]
     public bool overridePosX = false;
@@ -155,7 +155,9 @@ public class UWBObject : MonoBehaviour {
     }
 
     public void ReceiveData (SensorDataRaw _data) {
-        data = _data;
+        #region Maybe needed
+        //data = _data;
+        #endregion
 
         foreach (Datastream ds in _data.datastreams) {
             // Remove any whitespace, we don't need those
