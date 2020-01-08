@@ -12,114 +12,35 @@ public class UWBObject : MonoBehaviour {
     public string UWBAddress;
     //public SensorDataRaw data; // there is a thing in ReceiveData to uncomment aswell
 
-    [Header ("Position Override Settings")]
-    public bool overridePosX = false;
-    [SerializeField]
-    private float overridePosXValue = 0f;
-    public float OverridePosXValue {
-        get { return overridePosXValue; }
-        set {
-            overridePosXValue = value;
-            posX = overridePosXValue;
-            UpdateObjectPosition ();
-        }
-    }
+    [Header("Position Override Settings")]
 
-    [Space (10)]
-    public bool overridePosY = false;
-    [SerializeField]
-    private float overridePosYValue = 0f;
-    public float OverridePosYValue {
-        get { return overridePosYValue; }
-        set {
-            overridePosYValue = value;
-            posY = overridePosYValue;
-            UpdateObjectPosition ();
-        }
-    }
+    public Vector3 m_OverridePosition = Vector3.zero;
 
-    [Space (10)]
-    public bool overridePosZ = false;
-    [SerializeField]
-    private float overridePosZValue = 0f;
-    public float OverridePosZValue {
-        get { return overridePosZValue; }
-        set {
-            overridePosZValue = value;
-            posZ = overridePosXValue;
-            UpdateObjectPosition ();
-        }
-    }
+    public bool[] m_OverridePositionState = new bool[3]; // XYZ
+
+
+
 
     [Header ("Rotation Override Settings")]
     public bool allowRotation = false;
 
+
+
+
     [Header ("Position Invert Settings")]
-    [SerializeField]
-    private bool invertPosX = false;
-    public bool InvertPosX {
-        get { return invertPosX; }
-        set {
-            invertPosX = value;
-            UpdateObjectPosition ();
-        }
-    }
 
-    [SerializeField]
-    private bool invertPosY = false;
-    public bool InvertPosY {
-        get { return invertPosY; }
-        set {
-            invertPosY = value;
-            UpdateObjectPosition ();
-        }
-    }
+    public bool[] m_InvertPositionState = new bool[3]; // XYZ
 
-    [SerializeField]
-    private bool invertPosZ = true;
-    public bool InvertPosZ {
-        get { return invertPosZ; }
-        set {
-            invertPosZ = value;
-            UpdateObjectPosition ();
-        }
-    }
 
-    [Header ("Position Offset Settings")]
-    [SerializeField]
-    private float offsetPosX = 0f;
-    public float OffsetPosX {
-        get { return offsetPosX; }
-        set {
-            offsetPosX = value;
-            UpdateObjectPosition ();
-        }
-    }
+    [Header("Position Offset Settings")]
 
-    [SerializeField]
-    private float offsetPosY = 0f;
-    public float OffsetPosY {
-        get { return offsetPosY; }
-        set {
-            offsetPosY = value;
-            UpdateObjectPosition ();
-        }
-    }
+    public Vector3 m_OffsetPosition = Vector3.zero;
 
-    [SerializeField]
-    private float offsetPosZ = 0f;
-    public float OffsetPosZ {
-        get { return offsetPosZ; }
-        set {
-            offsetPosZ = value;
-            UpdateObjectPosition ();
-        }
-    }
 
     // These float values are used for storing XYZ position values read from tag, then use the in constructing the position Vec3
-    float posX = 0f;
-    float posY = 0f;
-    float posZ = 0f;
+    //float posX = 0f;
+    //float posY = 0f;
+    //float posZ = 0f;
 
     // Initial rotation of this object
     Quaternion initialObjectRotation;
@@ -145,6 +66,8 @@ public class UWBObject : MonoBehaviour {
     private GameObject CurrentUWBObject;
     private JSONRecorder recorder;
 
+    Vector3 position = Vector3.zero;
+
     #endregion
 
     private void Start () {
@@ -163,31 +86,57 @@ public class UWBObject : MonoBehaviour {
             // Remove any whitespace, we don't need those
             var val = string.Concat (ds.current_value.Where (c => !char.IsWhiteSpace (c)));
 
+
             // If user button is pressed, do something
             // if (ds.id == "user_button") { OnButtonPressed(); break; }
 
-            // this goes on Unity x axis
-            if (ds.id == "posX" && !overridePosX) {
-                float.TryParse (val, out posX);
-            } else if (ds.id == "posX" && overridePosX) {
-                posX = overridePosXValue;
+            
+
+            // goes un Unity X axis
+            if (ds.id == "posX")
+            {
+                if (!m_OverridePositionState[0])
+                {
+                    print("setting X pos from tag");
+                    float.TryParse(val, out position.x);
+                }
+                else
+                {
+                    print("setting X pos from override");
+                    position.x = m_OverridePosition.x;
+                }
             }
 
             // this goes on Unity z axis 
-            if (ds.id == "posY" && !overridePosZ) {
-                float.TryParse (val, out posZ);
-            } else if (ds.id == "posY" && overridePosZ) {
-                posZ = overridePosZValue;
+            if (ds.id == "posY")
+            {
+                if (!m_OverridePositionState[2])
+                {
+                    print("setting Z pos from tag");
+                    float.TryParse(val, out position.z);
+                }
+                else
+                {
+                    print("setting Z pos from override");
+                    position.z = m_OverridePosition.z;
+                    
+                }
             }
 
             // this is height, but it's weird now and doesn't really work, so just set it to static value
-            if (ds.id == "posZ" && !overridePosY) {
-                float.TryParse (val, out posY);
-            } else if (ds.id == "posZ" && overridePosY) {
-                posY = overridePosYValue;
+            if (ds.id == "posZ")
+            {
+                if (!m_OverridePositionState[1])
+                {
+                    float.TryParse(val, out position.z);
+                }
+                else
+                {
+                    position.y = m_OverridePosition.y;
+                }
             }
-
-            UpdateObjectPosition ();
+            
+            UpdateObjectPosition (position);
 
             // Create quaternion from string and update rotation with it
             // Need to figure out if sensor quaternions are the same as unity, because rotations seem weird
@@ -216,11 +165,20 @@ public class UWBObject : MonoBehaviour {
         }
     }
 
-    private void UpdateObjectPosition () {
-        Vector3 position = new Vector3 (posX * Invert (invertPosX) + offsetPosX, posY * Invert (invertPosY) + offsetPosY, posZ * Invert (invertPosZ) + offsetPosZ);
-        DOTween.Kill (transform);
-        transform.DOMove (position, smoothMoveSpeed).SetEase (Ease.Linear);
-        // transform.position = position;
+    //private void UpdateObjectPosition () {
+    //    Vector3 position = new Vector3 (posX * Invert (m_InvertPositionState[0]) + m_OffsetPosition.x, posY * Invert (m_InvertPositionState[1]) + m_OffsetPosition.y, posZ * Invert (m_InvertPositionState[2]) + m_OffsetPosition.z);
+    //    DOTween.Kill (transform);
+    //    transform.DOMove (position, smoothMoveSpeed).SetEase (Ease.Linear);
+    //    // transform.position = position;
+    //}
+
+    private void UpdateObjectPosition(Vector3 _pos)
+    {
+
+        Vector3 position = new Vector3(_pos.x * Invert(m_InvertPositionState[0]) + m_OffsetPosition.x, _pos.y * Invert(m_InvertPositionState[1]) + m_OffsetPosition.y, _pos.z * Invert(m_InvertPositionState[2]) + m_OffsetPosition.z);
+        DOTween.Kill(transform);
+        transform.DOMove(position, smoothMoveSpeed).SetEase(Ease.Linear);
+        //transform.position = position;
     }
 
     private void UpdateObjectRotation (Quaternion targetRotation) {

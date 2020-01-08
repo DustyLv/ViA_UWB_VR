@@ -6,8 +6,11 @@ using TMPro;
 
 public class CanvasSpecificFunctions : MonoBehaviour
 {
-    public TextMeshProUGUI m_SliderOutputText;
+    public TextMeshProUGUI m_ScaleSliderOutputText;
     public Slider m_SliderScale;
+
+    public TextMeshProUGUI m_RotationSliderOutputText;
+    public Slider m_SliderRotation;
 
     void Start()
     {
@@ -16,22 +19,34 @@ public class CanvasSpecificFunctions : MonoBehaviour
 
     private void InitSliderOutput()
     {
-        if(!m_SliderScale || !m_SliderOutputText)
+        if(!m_SliderScale || !m_ScaleSliderOutputText || !m_SliderRotation || !m_RotationSliderOutputText)
         {
             Debug.LogWarning("There is no Slider or TMProUGUI assigned.");
             return;
         }
-        m_SliderOutputText.text = m_SliderScale.value.ToString();
+        m_ScaleSliderOutputText.text = m_SliderScale.value.ToString();
+        m_RotationSliderOutputText.text = m_SliderRotation.value.ToString();
     }
 
-    public void UpdateSliderOutput(float _val)
+    public void UpdateScaleSliderOutput(float _val)
     {
-        if (!m_SliderOutputText)
+        if (!m_ScaleSliderOutputText)
         {
             Debug.LogWarning("There is no TMProUGUI assigned.");
             return;
         }
 
-        m_SliderOutputText.text = _val.ToString("0.000");
+        m_ScaleSliderOutputText.text = _val.ToString("0.000");
+    }
+
+    public void UpdateRotationSliderOutput(float _val)
+    {
+        if (!m_RotationSliderOutputText)
+        {
+            Debug.LogWarning("There is no TMProUGUI assigned.");
+            return;
+        }
+
+        m_RotationSliderOutputText.text = _val.ToString("0.000");
     }
 }

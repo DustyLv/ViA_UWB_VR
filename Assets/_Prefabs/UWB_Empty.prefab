@@ -45,23 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UWBAddress: 
-  data:
-    id: 0
-    address: 
-    datastreams: []
-  overridePosX: 0
-  overridePosXValue: 4
-  overridePosY: 1
-  overridePosYValue: 0
-  overridePosZ: 0
-  overridePosZValue: 4
+  m_OverridePosition: {x: 0, y: 0, z: 0}
+  m_OverridePositionState: 000000
   allowRotation: 0
-  invertPosX: 0
-  invertPosY: 0
-  invertPosZ: 1
-  offsetPosX: 0
-  offsetPosY: 0
-  offsetPosZ: 0
+  m_InvertPositionState: 000001
+  m_OffsetPosition: {x: 0, y: 0, z: 0}
   smoothMoveSpeed: 0.05
   buttonAction: 0
 --- !u!135 &305188623540662325

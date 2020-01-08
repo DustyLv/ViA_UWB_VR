@@ -50,6 +50,7 @@ public class ActiveUWBObjectDataOutputUI : MonoBehaviour
         {
             activeTransformString = "Position: \n - \n - \n - \n\n Rotation: \n - \n - \n -";
         }
+        InitOverrideFields();
         activeObjectTransformDataText.text = activeTransformString;
     }
 
@@ -65,25 +66,25 @@ public class ActiveUWBObjectDataOutputUI : MonoBehaviour
     {
         if (m_activeUWBObject != null)
         {
-            toggle_invertX.isOn = m_activeUWBObject.InvertPosX;
-            toggle_invertY.isOn = m_activeUWBObject.InvertPosY;
-            toggle_invertZ.isOn = m_activeUWBObject.InvertPosZ;
+            toggle_invertX.isOn = m_activeUWBObject.m_InvertPositionState[0];
+            toggle_invertY.isOn = m_activeUWBObject.m_InvertPositionState[1];
+            toggle_invertZ.isOn = m_activeUWBObject.m_InvertPositionState[2];
         }
     }
 
     public void ToggleInvertX(bool val)
     {
-        m_activeUWBObject.InvertPosX = val;
+        m_activeUWBObject.m_InvertPositionState[0] = val;
     }
 
     public void ToggleInvertY(bool val)
     {
-        m_activeUWBObject.InvertPosY = val;
+        m_activeUWBObject.m_InvertPositionState[1] = val;
     }
 
     public void ToggleInvertZ(bool val)
     {
-        m_activeUWBObject.InvertPosZ = val;
+        m_activeUWBObject.m_InvertPositionState[2] = val;
 
     }
     #endregion
@@ -93,58 +94,58 @@ public class ActiveUWBObjectDataOutputUI : MonoBehaviour
     {
         if (m_activeUWBObject != null)
         {
-            inputFieldToggle_X.isOn = m_activeUWBObject.overridePosX;
-            inputFieldToggle_Y.isOn = m_activeUWBObject.overridePosY;
-            inputFieldToggle_Z.isOn = m_activeUWBObject.overridePosZ;
+            inputFieldToggle_X.isOn = m_activeUWBObject.m_OverridePositionState[0];
+            inputFieldToggle_Y.isOn = m_activeUWBObject.m_OverridePositionState[1];
+            inputFieldToggle_Z.isOn = m_activeUWBObject.m_OverridePositionState[2];
 
             inputField_X.interactable = inputFieldToggle_X.isOn;
             inputField_Y.interactable = inputFieldToggle_Y.isOn;
             inputField_Z.interactable = inputFieldToggle_Z.isOn;
 
-            inputField_X.text = m_activeUWBObject.OverridePosXValue.ToString();
-            inputField_Y.text = m_activeUWBObject.OverridePosYValue.ToString();
-            inputField_Z.text = m_activeUWBObject.OverridePosZValue.ToString();
+            inputField_X.text = m_activeUWBObject.m_OverridePosition.x.ToString("0.000");
+            inputField_Y.text = m_activeUWBObject.m_OverridePosition.y.ToString("0.000");
+            inputField_Z.text = m_activeUWBObject.m_OverridePosition.z.ToString("0.000");
         }
     }
 
     public void ToggleInputField_X(bool val)
     {
         inputField_X.interactable = val;
-        m_activeUWBObject.overridePosX = inputFieldToggle_X.isOn;
+        m_activeUWBObject.m_OverridePositionState[0] = inputFieldToggle_X.isOn;
     }
     public void ToggleInputField_Y(bool val)
     {
         inputField_Y.interactable = val;
-        m_activeUWBObject.overridePosY = inputFieldToggle_Y.isOn;
+        m_activeUWBObject.m_OverridePositionState[1] = inputFieldToggle_Y.isOn;
     }
     public void ToggleInputField_Z(bool val)
     {
         inputField_Z.interactable = val;
-        m_activeUWBObject.overridePosZ = inputFieldToggle_Z.isOn;
+        m_activeUWBObject.m_OverridePositionState[2] = inputFieldToggle_Z.isOn;
     }
 
     public void SetOverrideOnObject_X()
     {
         float x = 0f;
         float.TryParse(inputField_X.text, out x);
-        m_activeUWBObject.OverridePosXValue = x;
-        m_activeUWBObject.overridePosX = inputFieldToggle_X.isOn;
+        m_activeUWBObject.m_OverridePosition.x = x;
+        m_activeUWBObject.m_OverridePositionState[0] = inputFieldToggle_X.isOn;
     }
 
     public void SetOverrideOnObject_Y()
     {
         float y = 0f;
         float.TryParse(inputField_Y.text, out y);
-        m_activeUWBObject.OverridePosYValue = y;
-        m_activeUWBObject.overridePosY = inputFieldToggle_Y.isOn;
+        m_activeUWBObject.m_OverridePosition.y = y;
+        m_activeUWBObject.m_OverridePositionState[1] = inputFieldToggle_Y.isOn;
     }
 
     public void SetOverrideOnObject_Z()
     {
         float z = 0f;
         float.TryParse(inputField_Z.text, out z);
-        m_activeUWBObject.OverridePosZValue = z;
-        m_activeUWBObject.overridePosZ = inputFieldToggle_Z.isOn;
+        m_activeUWBObject.m_OverridePosition.z = z;
+        m_activeUWBObject.m_OverridePositionState[2] = inputFieldToggle_Z.isOn;
 
     }
     #endregion
@@ -153,17 +154,17 @@ public class ActiveUWBObjectDataOutputUI : MonoBehaviour
     public void SetOffsetValueX(string val)
     {
         float.TryParse(val, out float i);
-        m_activeUWBObject.OffsetPosX = i;
+        m_activeUWBObject.m_OffsetPosition.x = i;
     }
     public void SetOffsetValueY(string val)
     {
         float.TryParse(val, out float i);
-        m_activeUWBObject.OffsetPosY = i;
+        m_activeUWBObject.m_OffsetPosition.y = i;
     }
     public void SetOffsetValueZ(string val)
     {
         float.TryParse(val, out float i);
-        m_activeUWBObject.OffsetPosZ = i;
+        m_activeUWBObject.m_OffsetPosition.z = i;
     }
     #endregion
 }

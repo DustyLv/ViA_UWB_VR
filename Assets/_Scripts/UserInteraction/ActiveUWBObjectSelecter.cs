@@ -39,17 +39,19 @@ public class ActiveUWBObjectSelecter : MonoBehaviour {
                 lastSelectedUWBAvatar = null;
                 lastSelectedUWBAvatar = hit.transform.gameObject;
             }
-
-            SetActiveUWBObject(lastSelectedUWBAvatar);
+            if(lastSelectedUWBAvatar != null)
+                SetActiveUWBObject(lastSelectedUWBAvatar);
         }
     }
 
     public void SetActiveUWBObject(GameObject targetObject){
         // first, the raycast collides with the graphics collider,and that is a child of the graphics object 
-        GameObject graphicsObjectRoot = targetObject.transform.parent.gameObject;
+        //GameObject graphicsObjectRoot = targetObject.transform.parent.gameObject;
         // then we get the parent of the graphics object which holds the UWBObject script
-        UWBObject uwbObjectRoot = graphicsObjectRoot.transform.parent.gameObject.GetComponent<UWBObject>();
-        if(uwbObjectRoot != null){
+        //UWBObject uwbObjectRoot = graphicsObjectRoot.transform.parent.gameObject.GetComponent<UWBObject>();
+
+        UWBObject uwbObjectRoot = targetObject.transform.root.GetComponent<UWBObject>();
+        if (uwbObjectRoot != null){
             UWBObjectManager.i.activeSelectedUWBObject = uwbObjectRoot;
             activeTagLabel.text = uwbObjectRoot.gameObject.name;
             UWBUI.InitNewSelectedObject();
