@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2744302293
+CRC: 828447682
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: eac305307343524956371fa5ca4ad1a3
+    Hash: 3bb7d74a4d10c7b9775b62fa29c77321
   TypeTreeHash:
     serializedVersion: 2
     Hash: dd877a6e8f21808f24b1aba124b4b0da
@@ -50,6 +50,7 @@ Assets:
 - Assets/Resources/Avatars/UWB_K9.prefab
 - Assets/Resources/Avatars/UWB_StreetLantern.prefab
 - Assets/Resources/Avatars/UWB_Computer.prefab
+- Assets/Resources/Avatars/UWB_Cube-0.1x0.1.prefab
 - Assets/Resources/Avatars/UWB_Avatar.prefab
 - Assets/Resources/Avatars/UWB_Monkey.prefab
 - Assets/Resources/Avatars/UWB_RockBig.prefab
