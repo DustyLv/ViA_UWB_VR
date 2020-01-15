@@ -102,9 +102,9 @@ public class ActiveUWBObjectDataOutputUI : MonoBehaviour
             inputField_Y.interactable = inputFieldToggle_Y.isOn;
             inputField_Z.interactable = inputFieldToggle_Z.isOn;
 
-            inputField_X.text = m_activeUWBObject.m_OverridePosition.x.ToString("0.000");
-            inputField_Y.text = m_activeUWBObject.m_OverridePosition.y.ToString("0.000");
-            inputField_Z.text = m_activeUWBObject.m_OverridePosition.z.ToString("0.000");
+            //inputField_X.text = m_activeUWBObject.m_OverridePosition.x.ToString("0.000");
+            //inputField_Y.text = m_activeUWBObject.m_OverridePosition.y.ToString("0.000");
+            //inputField_Z.text = m_activeUWBObject.m_OverridePosition.z.ToString("0.000");
         }
     }
 

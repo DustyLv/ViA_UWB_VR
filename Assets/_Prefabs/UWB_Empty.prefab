@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UWBAddress: 
   m_OverridePosition: {x: 0, y: 0, z: 0}
-  m_OverridePositionState: 000000
+  m_OverridePositionState: 000100
   allowRotation: 0
   m_InvertPositionState: 000001
   m_OffsetPosition: {x: 0, y: 0, z: 0}

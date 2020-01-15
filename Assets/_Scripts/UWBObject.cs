@@ -128,7 +128,8 @@ public class UWBObject : MonoBehaviour {
             {
                 if (!m_OverridePositionState[1])
                 {
-                    float.TryParse(val, out position.z);
+                    
+                    float.TryParse(val, out position.y);
                 }
                 else
                 {
@@ -195,6 +196,19 @@ public class UWBObject : MonoBehaviour {
         // transform.rotation = Quaternion.Euler(rot);
         transform.DORotate (rot, smoothMoveSpeed).SetEase (Ease.Linear);
 
+    }
+
+    private void Update()
+    {
+        //print("position: " + position);
+        //if (m_OverridePositionState[0] || m_OverridePositionState[1] || m_OverridePositionState[2])
+        //{
+            //Vector3 _p = transform.position;
+            //if (m_OverridePositionState[0]) { Vector3 _p = transform.position; _p.x = m_OverridePosition.x; UpdateObjectPosition(_p); }
+            //if (m_OverridePositionState[1]) { Vector3 _p = transform.position; _p.y = m_OverridePosition.y; UpdateObjectPosition(_p); }
+            //if (m_OverridePositionState[2]) { Vector3 _p = transform.position; _p.z = m_OverridePosition.z; UpdateObjectPosition(_p); }
+            //UpdateObjectPosition(_p);
+        //}
     }
 
     private void OnButtonPressed () {
