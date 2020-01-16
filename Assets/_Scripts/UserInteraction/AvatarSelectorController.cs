@@ -114,7 +114,9 @@ public class AvatarSelectorController : MonoBehaviour {
     /// <returns></returns>
     IEnumerator LoadRemoteAvatarsFromAssetBundle() // create async download and load
     {
-        UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(m_RemoteAvatarAssetBundleLink);
+        string gDriveDirectLink = "https://drive.google.com/uc?export=download&id=";
+        string assetBundleLink = string.Concat(gDriveDirectLink, m_RemoteAvatarAssetBundleLink);
+        UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(assetBundleLink);
 
         uwr.SendWebRequest();
         
