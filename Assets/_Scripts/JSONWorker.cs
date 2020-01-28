@@ -6,8 +6,22 @@ public class JSONWorker : MonoBehaviour
 {
     //public List<SensorDataRaw> sensorDataRaw;
     //public SensorDataRaw currentSensorDataRaw;
+    public static JSONWorker instance;
 
     private UWBObjectManager UWBMan;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Debug.Log("Instance already exists, destroying object!");
+            Destroy(this);
+        }
+    }
 
     private void Start()
     {
