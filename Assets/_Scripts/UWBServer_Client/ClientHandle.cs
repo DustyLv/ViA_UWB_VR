@@ -52,5 +52,12 @@ namespace UWBServer_Client
             JSONWorker.instance.JsonToObject(_json);
             //print(_json);
         }
+
+        public static void UWBData(Packet _packet)
+        {
+            string json = _packet.ReadString();
+            //print(json);
+            UWBObjectManager.i.UpdateUWBObject(UWBObjectSerializer.instance.Deserialize(json));
+        }
     }
 }

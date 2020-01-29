@@ -75,16 +75,19 @@ public class ActiveUWBObjectDataOutputUI : MonoBehaviour
     public void ToggleInvertX(bool val)
     {
         m_activeUWBObject.m_InvertPositionState[0] = val;
+        UWBObjectManager.i.SendUpdatedActiveObjectsSettingsToServer();
     }
 
     public void ToggleInvertY(bool val)
     {
         m_activeUWBObject.m_InvertPositionState[1] = val;
+        UWBObjectManager.i.SendUpdatedActiveObjectsSettingsToServer();
     }
 
     public void ToggleInvertZ(bool val)
     {
         m_activeUWBObject.m_InvertPositionState[2] = val;
+        UWBObjectManager.i.SendUpdatedActiveObjectsSettingsToServer();
 
     }
     #endregion
@@ -112,6 +115,7 @@ public class ActiveUWBObjectDataOutputUI : MonoBehaviour
     {
         inputField_X.interactable = val;
         m_activeUWBObject.m_OverridePositionState[0] = inputFieldToggle_X.isOn;
+
     }
     public void ToggleInputField_Y(bool val)
     {
@@ -130,6 +134,7 @@ public class ActiveUWBObjectDataOutputUI : MonoBehaviour
         float.TryParse(inputField_X.text, out x);
         m_activeUWBObject.m_OverridePosition.x = x;
         m_activeUWBObject.m_OverridePositionState[0] = inputFieldToggle_X.isOn;
+        UWBObjectManager.i.SendUpdatedActiveObjectsSettingsToServer();
     }
 
     public void SetOverrideOnObject_Y()
@@ -138,6 +143,7 @@ public class ActiveUWBObjectDataOutputUI : MonoBehaviour
         float.TryParse(inputField_Y.text, out y);
         m_activeUWBObject.m_OverridePosition.y = y;
         m_activeUWBObject.m_OverridePositionState[1] = inputFieldToggle_Y.isOn;
+        UWBObjectManager.i.SendUpdatedActiveObjectsSettingsToServer();
     }
 
     public void SetOverrideOnObject_Z()
@@ -146,6 +152,7 @@ public class ActiveUWBObjectDataOutputUI : MonoBehaviour
         float.TryParse(inputField_Z.text, out z);
         m_activeUWBObject.m_OverridePosition.z = z;
         m_activeUWBObject.m_OverridePositionState[2] = inputFieldToggle_Z.isOn;
+        UWBObjectManager.i.SendUpdatedActiveObjectsSettingsToServer();
 
     }
     #endregion
@@ -155,16 +162,19 @@ public class ActiveUWBObjectDataOutputUI : MonoBehaviour
     {
         float.TryParse(val, out float i);
         m_activeUWBObject.m_OffsetPosition.x = i;
+        UWBObjectManager.i.SendUpdatedActiveObjectsSettingsToServer();
     }
     public void SetOffsetValueY(string val)
     {
         float.TryParse(val, out float i);
         m_activeUWBObject.m_OffsetPosition.y = i;
+        UWBObjectManager.i.SendUpdatedActiveObjectsSettingsToServer();
     }
     public void SetOffsetValueZ(string val)
     {
         float.TryParse(val, out float i);
         m_activeUWBObject.m_OffsetPosition.z = i;
+        UWBObjectManager.i.SendUpdatedActiveObjectsSettingsToServer();
     }
     #endregion
 }

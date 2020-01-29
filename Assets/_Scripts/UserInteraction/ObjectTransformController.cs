@@ -18,6 +18,9 @@ public class ObjectTransformController : MonoBehaviour
 
     //GizmoClickDetector hitReciver = null;
 
+    private float nextTime;
+    private float nextStepTime = 0.016666f; // 1/<how many times per second> = value;  0.016666 = 60 times per second
+
     void Start()
     {
         m_RaycastSource = GlobalVariables.i.RIGHT_ARM;
@@ -36,6 +39,7 @@ public class ObjectTransformController : MonoBehaviour
             RaycastHit hit;
 
             bool btn = m_ClickAction.GetState(m_TargetSource);
+            bool btnUp = m_ClickAction.GetLastStateUp(m_TargetSource);
 
             if (btn)
             {
@@ -46,14 +50,32 @@ public class ObjectTransformController : MonoBehaviour
                     Vector3 point = hit.point;
                     //point.y = 0f;
                     m_MoveTarget.transform.position = point;
-                    UWBObjectManager.i.activeSelectedUWBObject.m_OverridePosition = point;
+                    Vector3 pointAbs = new Vector3(Mathf.Abs(point.x), Mathf.Abs(point.y), Mathf.Abs(point.z));
+
+                    UWBObjectManager.i.activeSelectedUWBObject.m_OverridePosition = pointAbs;
+
+                    UWBObjectManager.i.activeSelectedUWBObject.position = pointAbs;
 
                     UWBObjectManager.i.activeSelectedUWBObject.m_OverridePositionState[0] = true;
                     UWBObjectManager.i.activeSelectedUWBObject.m_OverridePositionState[1] = true;
                     UWBObjectManager.i.activeSelectedUWBObject.m_OverridePositionState[2] = true;
 
+                    if (Time.time > nextTime)
+                    {
+                        //UWBObjectSync.instance.SendUpdateToServer(UWBObjectManager.i.activeSelectedUWBObject);
+                        UWBObjectManager.i.SendUpdatedActiveObjectsSettingsToServer();
+                        nextTime = Time.time + nextStepTime;
+                    }
                 }
+
+
             }
+            //if (btnUp)
+            //{
+            //    print("uuuppp!");
+                
+            //}
+
         }
     }
 

@@ -11,6 +11,7 @@ public class ClientAutoConnect : MonoBehaviour
 
     public void ConnectToServer()
     {
+        print("Connecting to server.");
         Client.instance.ConnectToServer();
         
     }

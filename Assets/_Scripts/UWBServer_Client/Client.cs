@@ -300,11 +300,12 @@ namespace UWBServer_Client
         {
             packetHandlers = new Dictionary<int, PacketHandler>()
             {
-            { (int)ServerPackets.welcome, ClientHandle.Welcome },
-            //{ (int)ServerPackets.spawnPlayer, ClientHandle.SpawnPlayer },
-            //{ (int)ServerPackets.playerPosition, ClientHandle.PlayerPosition },
-            //{ (int)ServerPackets.playerRotation, ClientHandle.PlayerRotation },
-            { (int)ServerPackets.jsonData, ClientHandle.JsonData }
+                { (int)ServerPackets.welcome, ClientHandle.Welcome },
+                //{ (int)ServerPackets.spawnPlayer, ClientHandle.SpawnPlayer },
+                //{ (int)ServerPackets.playerPosition, ClientHandle.PlayerPosition },
+                //{ (int)ServerPackets.playerRotation, ClientHandle.PlayerRotation },
+                { (int)ServerPackets.jsonData, ClientHandle.JsonData },
+                { (int)ServerPackets.uwbData, ClientHandle.UWBData }
             };
             Debug.Log("Initialized packets.");
         }

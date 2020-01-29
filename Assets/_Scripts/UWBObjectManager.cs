@@ -76,4 +76,24 @@ public class UWBObjectManager : MonoBehaviour
         uwb.gameObject.name = address;
         UWBObjects.Add(uwb);
     }
+
+    public void UpdateUWBObject(UWBObjectData _newUWBObject)
+    {
+        if (!SceneHasObjectWithAddress(_newUWBObject.UWBAddress))
+        {
+            CreateNewUWBObject(_newUWBObject.UWBAddress);
+        }
+
+        UWBObjectSync.instance.UpdateSettingsFromServer(FindObjectByAddress(_newUWBObject.UWBAddress), _newUWBObject);
+    }
+
+    public void SetActiveSelectedObject(UWBObject _obj)
+    {
+        activeSelectedUWBObject = _obj;
+    }
+
+    public void SendUpdatedActiveObjectsSettingsToServer()
+    {
+        UWBObjectSync.instance.SendUpdateToServer(activeSelectedUWBObject);
+    }
 }

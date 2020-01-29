@@ -51,6 +51,18 @@ namespace UWBServer_Client
                 SendUDPData(_packet);
             }
         }
+
+        /// <summary>Sends player input to the server.</summary>
+        /// <param name="_inputs"></param>
+        public static void UWBObjectData(string _jsonData)
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.uwbData))
+            {
+                _packet.Write(_jsonData);   // EDITED FROM: _packet.Write(UIManager.instance.usernameField.text);
+
+                SendTCPData(_packet);
+            }
+        }
         #endregion
     }
 }

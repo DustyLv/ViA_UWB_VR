@@ -5,6 +5,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using NaughtyAttributes;
 
 public class UWBObject : MonoBehaviour {
     #region Variables
@@ -13,27 +14,16 @@ public class UWBObject : MonoBehaviour {
     //public SensorDataRaw data; // there is a thing in ReceiveData to uncomment aswell
 
     [Header("Position Override Settings")]
-
     public Vector3 m_OverridePosition = Vector3.zero;
-
     public bool[] m_OverridePositionState = new bool[3]; // XYZ
-
-
-
 
     [Header ("Rotation Override Settings")]
     public bool allowRotation = false;
 
-
-
-
     [Header ("Position Invert Settings")]
-
     public bool[] m_InvertPositionState = new bool[3]; // XYZ
 
-
     [Header("Position Offset Settings")]
-
     public Vector3 m_OffsetPosition = Vector3.zero;
 
 
@@ -43,36 +33,36 @@ public class UWBObject : MonoBehaviour {
     //float posZ = 0f;
 
     // Initial rotation of this object
-    Quaternion initialObjectRotation;
+    //Quaternion initialObjectRotation;
 
     // Initial rotation of the tag
-    Quaternion initialIMURotation;
-    bool imuInitialized = false;
+    //Quaternion initialIMURotation;
+    //bool imuInitialized = false;
 
     [Header ("Other Settings")]
     // Used in the tween to control how fast it will tween between values (in position and rotation)
     public float smoothMoveSpeed = 0.05f;
 
-    public enum UWBButtonAction { SwitchTypes, Record };
-    [SerializeField]
-    private UWBButtonAction buttonAction;
-    public UWBButtonAction ButtonAction {
-        get { return buttonAction; }
-        set {
-        buttonAction = value;
-        }
-    }
+    //public enum UWBButtonAction { SwitchTypes, Record };
+    //[SerializeField]
+    //private UWBButtonAction buttonAction;
+    //public UWBButtonAction ButtonAction {
+    //    get { return buttonAction; }
+    //    set {
+    //    buttonAction = value;
+    //    }
+    //}
 
     private GameObject CurrentUWBObject;
-    private JSONRecorder recorder;
+    //private JSONRecorder recorder;
 
-    Vector3 position = Vector3.zero;
+    public Vector3 position = Vector3.zero;
 
     #endregion
 
     private void Start () {
-        initialObjectRotation = transform.rotation;
-        recorder = GameObject.FindObjectOfType<JSONRecorder> ();
+        //initialObjectRotation = transform.rotation;
+        //recorder = GameObject.FindObjectOfType<JSONRecorder> ();
 
         ChangeObjectAvatar(GlobalVariables.i.DEFAULT_AVATAR_PREFAB.avatar);
     }
@@ -173,7 +163,7 @@ public class UWBObject : MonoBehaviour {
     //    // transform.position = position;
     //}
 
-    private void UpdateObjectPosition(Vector3 _pos)
+    public void UpdateObjectPosition(Vector3 _pos)
     {
 
         Vector3 position = new Vector3(_pos.x * Invert(m_InvertPositionState[0]) + m_OffsetPosition.x, _pos.y * Invert(m_InvertPositionState[1]) + m_OffsetPosition.y, _pos.z * Invert(m_InvertPositionState[2]) + m_OffsetPosition.z);
@@ -198,6 +188,29 @@ public class UWBObject : MonoBehaviour {
 
     }
 
+    public void UpdateSettingsFromServer(UWBObjectData _newSettings)
+    {
+        m_OverridePosition = _newSettings.m_OverridePosition;
+        m_OverridePositionState = _newSettings.m_OverridePositionState;
+        allowRotation = _newSettings.allowRotation;
+        m_InvertPositionState = _newSettings.m_InvertPositionState;
+        m_OffsetPosition = _newSettings.m_OffsetPosition;
+        position = _newSettings.position;
+
+        UpdateObjectPosition(position);
+    }
+
+    public void OnLocalSettingsChanged()
+    {
+        UWBObjectSync.instance.SendUpdateToServer(this);
+    }
+
+    public void UpdateSettingsToServer()
+    {
+        //UWBObjectData data = new UWBObjectData();
+        //data.m_OverridePosition = 
+    }
+
     private void Update()
     {
         //print("position: " + position);
@@ -211,20 +224,20 @@ public class UWBObject : MonoBehaviour {
         //}
     }
 
-    private void OnButtonPressed () {
-        switch (buttonAction) {
-            //case UWBButtonAction.SwitchTypes:
-            //    ChangeObjectType ();
-            //    break;
-            case UWBButtonAction.Record:
-                ToggleRecord ();
-                break;
-        }
-    }
+    //private void OnButtonPressed () {
+    //    switch (buttonAction) {
+    //        //case UWBButtonAction.SwitchTypes:
+    //        //    ChangeObjectType ();
+    //        //    break;
+    //        case UWBButtonAction.Record:
+    //            ToggleRecord ();
+    //            break;
+    //    }
+    //}
 
-    private void ToggleRecord () {
-        recorder.Record = !recorder.Record;
-    }
+    //private void ToggleRecord () {
+    //    recorder.Record = !recorder.Record;
+    //}
 
     public void ChangeObjectAvatar (GameObject newAvatar) {
 

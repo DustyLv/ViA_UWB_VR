@@ -52,9 +52,12 @@ public class ActiveUWBObjectSelecter : MonoBehaviour {
 
         UWBObject uwbObjectRoot = targetObject.transform.root.GetComponent<UWBObject>();
         if (uwbObjectRoot != null){
-            UWBObjectManager.i.activeSelectedUWBObject = uwbObjectRoot;
+            //UWBObjectManager.i.activeSelectedUWBObject = uwbObjectRoot;
+            UWBObjectManager.i.SetActiveSelectedObject(uwbObjectRoot);
             activeTagLabel.text = uwbObjectRoot.gameObject.name;
             UWBUI.InitNewSelectedObject();
+
+            
         }
     }
 }
